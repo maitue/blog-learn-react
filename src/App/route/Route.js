@@ -5,9 +5,7 @@ import Sidenav from '../pages/sidenav/SideNav'
 export const Routes = withRouter(() => {
     return (
         <Switch>
-            <Sidenav>
-                <Home/>
-            </Sidenav>
+            <Home />
         </Switch>
     )
 })
