@@ -86,14 +86,14 @@ const useStyles = makeStyles((theme) => ({
 export default function ButtonAppBar() {
     const classes = useStyles();
     const theme = useTheme();
-    const [open, setOpen] = React.useState(false);
+    const [openDrawer, setOpenDrawer] = React.useState(false);
 
     const handleDrawerOpen = () => {
-        setOpen(true);
+        setOpenDrawer(true);
     };
 
     const handleDrawerClose = () => {
-        setOpen(false);
+        setOpenDrawer(false);
     };
 
     return (
@@ -102,7 +102,7 @@ export default function ButtonAppBar() {
             <AppBar
                 position="fixed"
                 className={clsx(classes.appBar, {
-                    [classes.appBarShift]: open,
+                    [classes.appBarShift]: openDrawer,
                 })}
             >
                 <Toolbar>
@@ -112,7 +112,7 @@ export default function ButtonAppBar() {
                         onClick={handleDrawerOpen}
                         edge="start"
                         className={clsx(classes.menuButton, {
-                            [classes.hide]: open,
+                            [classes.hide]: openDrawer,
                         })}
                     >
                         <MenuIcon />
@@ -125,13 +125,13 @@ export default function ButtonAppBar() {
             <Drawer
                 variant="permanent"
                 className={clsx(classes.drawer, {
-                    [classes.drawerOpen]: open,
-                    [classes.drawerClose]: !open,
+                    [classes.drawerOpen]: openDrawer,
+                    [classes.drawerClose]: !openDrawer,
                 })}
                 classes={{
                     paper: clsx({
-                        [classes.drawerOpen]: open,
-                        [classes.drawerClose]: !open,
+                        [classes.drawerOpen]: openDrawer,
+                        [classes.drawerClose]: !openDrawer,
                     }),
                 }}
             >
