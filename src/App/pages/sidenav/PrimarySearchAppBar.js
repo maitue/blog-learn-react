@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme, alpha } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -18,6 +18,11 @@ import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import { Routes } from '../../route/Route';
+import SearchIcon from "@material-ui/icons/Search";
+import InputBase from '@material-ui/core/InputBase';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const drawerWidth = 240;
 
@@ -81,12 +86,56 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
         padding: theme.spacing(3),
     },
+    search: {
+        position: "relative",
+        borderRadius: theme.shape.borderRadius,
+        backgroundColor: alpha(theme.palette.common.white, 0.15),
+        "&:hover": {
+            backgroundColor: alpha(theme.palette.common.white, 0.25)
+        },
+        marginLeft: 0,
+        width: "100%",
+        [theme.breakpoints.up("sm")]: {
+            marginLeft: theme.spacing(1),
+            width: "auto"
+        },
+    },
+    searchIcon: {
+        padding: theme.spacing(0, 2),
+        height: "100%",
+        position: "absolute",
+        pointerEvents: "none",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    inputRoot: {
+        color: "inherit"
+    },
+    inputInput: {
+        padding: theme.spacing(1, 1, 1, 0),
+        // vertical padding + font size from searchIcon
+        paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+        transition: theme.transitions.create("width"),
+        width: "100%",
+        [theme.breakpoints.up("sm")]: {
+            width: "12ch",
+            "&:focus": {
+                width: "20ch"
+            }
+        }
+    },
+    flexGrow: {
+        flexGrow: 1,
+    }
 }));
 
 export default function ButtonAppBar() {
     const classes = useStyles();
     const theme = useTheme();
     const [openDrawer, setOpenDrawer] = React.useState(false);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
 
     const handleDrawerOpen = () => {
         setOpenDrawer(true);
@@ -94,6 +143,14 @@ export default function ButtonAppBar() {
 
     const handleDrawerClose = () => {
         setOpenDrawer(false);
+    };
+    
+    const handleMenu = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
     };
 
     return (
@@ -120,6 +177,51 @@ export default function ButtonAppBar() {
                     <Typography variant="h6" noWrap>
                         Mini variant drawer
                     </Typography>
+
+                    {/* search */}
+                    <div className={classes.search}>
+                        <div className={classes.searchIcon}>
+                            <SearchIcon />
+                        </div>
+                        <InputBase className={classes.flexGrow}
+                            placeholder="Search…"
+                            classes={{
+                                root: classes.inputRoot,
+                                input: classes.inputInput
+                            }}
+                            inputProps={{ "aria-label": "search" }}
+                        />
+                    </div>
+                    <div className={classes.flexGrow}></div>
+                    <div>
+                        <IconButton
+                            aria-label="account of current user"
+                            aria-controls="menu-appbar"
+                            aria-haspopup="true"
+                            onClick={handleMenu}
+                            color="inherit"
+                        >
+                            <AccountCircle />
+                        </IconButton>
+                        <Menu
+                            id="menu-appbar"
+                            anchorEl={anchorEl}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            open={open}
+                            onClose={handleClose}
+                        >
+                            <MenuItem onClick={handleClose}>Profile</MenuItem>
+                            <MenuItem onClick={handleClose}>My account</MenuItem>
+                        </Menu>
+                    </div>
                 </Toolbar>
             </AppBar>
             <Drawer
